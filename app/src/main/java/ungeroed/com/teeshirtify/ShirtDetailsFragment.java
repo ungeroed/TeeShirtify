@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 
 /**
@@ -48,14 +50,27 @@ public class ShirtDetailsFragment extends Fragment {
         if (getArguments() != null) {
             shirt = (Shirt) getArguments().getSerializable("shirt");
         }
-        Log.e("here", shirt.name);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_shirt_details, container, false);
+        View view = inflater.inflate(R.layout.fragment_shirt_details, container, false);
+        ImageView mImageView = (ImageView) view.findViewById(R.id.largeImage);
+        if(shirt.image != null)
+            mImageView.setImageBitmap(shirt.image);
+        TextView nameView = (TextView) view.findViewById(R.id.product_name);
+        nameView.setText(shirt.name);
+        TextView colorView = (TextView) view.findViewById(R.id.product_color);
+        colorView.setText(shirt.colour);
+        TextView sizeView = (TextView) view.findViewById(R.id.product_size);
+        sizeView.setText("\""+shirt.size+"\"");
+        TextView quantityView = (TextView) view.findViewById(R.id.product_quantity);
+        quantityView.setText(shirt.quantity+"");
+        TextView priceView = (TextView) view.findViewById(R.id.product_price);
+        priceView.setText("Kr. "+ shirt.price);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
