@@ -17,7 +17,7 @@ public class Shirt implements Serializable {
     String size;
     String name;
     int quantity;
-    public Bitmap image;
+    //public Bitmap image;
 
     public void print(){
         Log.e("here",picture);

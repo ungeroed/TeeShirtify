@@ -106,9 +106,19 @@ public class ApiHandler {
             }
         }
         Gson gson = new Gson();
-        products = gson.fromJson(response.toString(), new TypeToken<ArrayList<Shirt>>(){}.getType());
+        ArrayList<Shirt> fetched_products = gson.fromJson(response.toString(), new TypeToken<ArrayList<Shirt>>(){}.getType());
+        products = sanitizeProducts(fetched_products);
     }
 
+    private ArrayList<Shirt> sanitizeProducts(ArrayList<Shirt> list){
+        ArrayList<Shirt> sanitized = new ArrayList<>();
+        for (Shirt shirt : list){
+            if(shirt.quantity == 0 || shirt.name.equals("string"))
+               continue; //NOTE: could check for duplicate items here as well.
+            sanitized.add(shirt);
+        }
+        return sanitized;
+    }
     //this is borrowed from Android developer site
     //this is invoked per view instantiation (as there is no reason to fetch all
     //images if they are never shown).
@@ -130,7 +140,7 @@ public class ApiHandler {
                 e.printStackTrace();
             }
             //store image
-            urls[0].image = mIcon11;
+            //urls[0].image = mIcon11;
             return mIcon11;
         }
 

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -58,8 +59,7 @@ public class ShirtDetailsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_shirt_details, container, false);
         ImageView mImageView = (ImageView) view.findViewById(R.id.largeImage);
-        if(shirt.image != null)
-            mImageView.setImageBitmap(shirt.image);
+        ApiHandler.getInstance().fetchImageFromUrl(mImageView,shirt);
         TextView nameView = (TextView) view.findViewById(R.id.product_name);
         nameView.setText(shirt.name);
         TextView colorView = (TextView) view.findViewById(R.id.product_color);
@@ -70,14 +70,18 @@ public class ShirtDetailsFragment extends Fragment {
         quantityView.setText(shirt.quantity+"");
         TextView priceView = (TextView) view.findViewById(R.id.product_price);
         priceView.setText("Kr. "+ shirt.price);
+        FrameLayout buyBtn = (FrameLayout) view.findViewById(R.id.buyBtn);
+        buyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null != mListener) {
+                    // Notify the active callbacks interface (the activity, if the
+                    // fragment is attached to one) that an item has been selected.
+                    mListener.onFragmentInteraction(shirt);
+                }
+            }
+        });
         return view;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override
@@ -109,6 +113,6 @@ public class ShirtDetailsFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction(Shirt shirt);
     }
 }
