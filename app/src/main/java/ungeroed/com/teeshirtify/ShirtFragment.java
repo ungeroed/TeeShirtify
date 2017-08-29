@@ -55,7 +55,8 @@ public class ShirtFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        //use the apihandler singleton to fetch the data in a separate thread
+        ApiHandler.getInstance().fetchInitial(getContext());
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
@@ -113,6 +114,12 @@ public class ShirtFragment extends Fragment {
         super.onDetach();
         mListener = null;
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mMessageReceiver);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e("count: ", ""+myAdapter.getItemCount());
     }
 
     /**

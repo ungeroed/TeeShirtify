@@ -6,13 +6,18 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.HashMap;
+
+import q.rorbin.badgeview.QBadgeView;
 
 
 public class NavigationActivity extends AppCompatActivity implements ShirtFragment.OnListFragmentInteractionListener, ShirtDetailsFragment.OnFragmentInteractionListener , CheckoutFragment.BasketChangeListener{
@@ -30,9 +35,6 @@ public class NavigationActivity extends AppCompatActivity implements ShirtFragme
                 case R.id.navigation_home:
                     showListFragment();
                     return true;
-                case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
-                    return true;
                 case R.id.navigation_notifications:
                     showCheckoutFragment();
                     return true;
@@ -44,8 +46,7 @@ public class NavigationActivity extends AppCompatActivity implements ShirtFragme
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //use the apihandler singleton to fetch the data in a separate thread
-        ApiHandler.getInstance().fetchInitial(getApplicationContext());
+
         basket = new HashMap<Integer, Integer>();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_naviagtion);
@@ -114,9 +115,17 @@ public class NavigationActivity extends AppCompatActivity implements ShirtFragme
         }else {
             basket.put(shirt.id, 1);
         }
-
+        updateBadge();
     }
 
+    private void updateBadge(){
+        //update badge in navigation item
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationMenuView bottomNavigationMenuView =
+                (BottomNavigationMenuView) navigation.getChildAt(0);
+        View v = bottomNavigationMenuView.getChildAt(1); // number of menu from left
+        new QBadgeView(this).bindTarget(v).setBadgeGravity(Gravity.CENTER | Gravity.END).setGravityOffset(29F,true).setBadgeNumber(getBasketSize());
+    }
     //create the list fragment and maybe scroll to previous location
     private void showListFragment(){
         ShirtFragment listFragment = ShirtFragment.newInstance(1);
@@ -132,8 +141,33 @@ public class NavigationActivity extends AppCompatActivity implements ShirtFragme
         getFragmentManager().beginTransaction().replace(R.id.content, checkoutFragment).commit();
     }
 
+    private int getBasketSize(){
+        int count = 0;
+        for(Integer value : basket.values())
+            count += value;
+        return count;
+    }
+
     @Override
-    public void onBasketChange(HashMap<Integer, Integer> basket) {
-        this.basket = basket;
+    public void onBasketChange(Boolean place_order) {
+        if(!place_order){
+            basket.clear();
+            updateBadge();
+            Context context = getApplicationContext();
+            CharSequence text = "Shopping basket cleared";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+            showListFragment();
+        } else {
+            Context context = getApplicationContext();
+            CharSequence text = "Placing order please wait";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+            ApiHandler.getInstance().placeOrder(getApplicationContext(), basket);
+        }
+
+
     }
 }

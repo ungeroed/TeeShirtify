@@ -1,16 +1,39 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="ungeroed.com.teeshirtify.CheckoutFragment">
 
-    <FrameLayout
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="94dp"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/checkout_sign"
+        />
+    <LinearLayout
         android:id="@+id/checkout_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:orientation="vertical"
         android:layout_weight="1">
-
-
-    </FrameLayout>
-
-</FrameLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/clear_basket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/clear_basket"
+            android:layout_weight="1"/>
+        <Button
+            android:id="@+id/place_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/place_order"
+            android:layout_weight="1"/>
+    </LinearLayout>
+</LinearLayout>
