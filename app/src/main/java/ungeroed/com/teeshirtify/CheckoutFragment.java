@@ -153,6 +153,12 @@ public class CheckoutFragment extends Fragment {
         return line;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable("basket", basket);
+        super.onSaveInstanceState(outState);
+    }
+
 
     @Override
     public void onAttach(Context context) {

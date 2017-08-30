@@ -13,16 +13,28 @@ import ungeroed.com.teeshirtify.ShirtFragment.OnListFragmentInteractionListener;
 
 
 /**
- * specified {@link OnListFragmentInteractionListener}.
- *
+ * This is a custom RecyclerView, with relative few changes to the standard implementation.
+ * Basically the viewholder has been altered to match the custom xml layouts file and the filters method has been
+ * added.
  */
 public class MyShirtRecyclerViewAdapter extends RecyclerView.Adapter<MyShirtRecyclerViewAdapter.ViewHolder> {
 
+    //ApiHandler class fetches data from webservice
     ApiHandler handler;
+
+    //these are the currently employed filters
     String[] filters = new String[]{"All", "All"};
 
+    //listener for callback events when users selects an item
     private final OnListFragmentInteractionListener mListener;
 
+
+    // ------------------------- lifecycle methods -----------------------
+
+    /**
+     * standard constructor
+     * @param listener callback listener implementing correct interface
+     */
     public MyShirtRecyclerViewAdapter(OnListFragmentInteractionListener listener) {
         handler = ApiHandler.getInstance();
         mListener = listener;
@@ -37,12 +49,15 @@ public class MyShirtRecyclerViewAdapter extends RecyclerView.Adapter<MyShirtRecy
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        //fetch single shirt from the model
         Shirt shirt = handler.getSingleShirt(position, filters);
         holder.mItem = shirt;
         holder.title.setText(shirt.name.toUpperCase());
         holder.description.setText(String.format("Color: %s, Size: %s",shirt.colour,shirt.size));
+        //start fetching the image asynchronously
         ApiHandler.getInstance().fetchImageFromUrl(holder.mImageView,shirt);
 
+        //set actionlistener
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,11 +69,30 @@ public class MyShirtRecyclerViewAdapter extends RecyclerView.Adapter<MyShirtRecy
         });
     }
 
+    // ------------------------- Lifecycle methods end -----------------------
 
+    // ------------------------- Data adaptor methods -----------------------
+
+    /**
+     * @return current number of items in datasource, with the filters applied
+     */
     @Override
     public int getItemCount() {
         return handler.getProductCount(filters);
     }
+
+
+    public void setFilters(String size, String color){
+        if(size != null)
+            filters[0] = size;
+        if(color != null)
+            filters[1] = color;
+        this.notifyDataSetChanged();
+    }
+
+    // ------------------------- Lifecycle methods end -----------------------
+
+    // ------------------------- UI methods ---------------------------------
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
@@ -81,11 +115,5 @@ public class MyShirtRecyclerViewAdapter extends RecyclerView.Adapter<MyShirtRecy
         }
     }
 
-    public void setFilters(String size, String color){
-        if(size != null)
-            filters[0] = size;
-        if(color != null)
-            filters[1] = color;
-        this.notifyDataSetChanged();
-    }
+    // ------------------------- UI methods end ---------------------------------
 }

@@ -1,10 +1,8 @@
 package ungeroed.com.teeshirtify;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,27 +12,25 @@ import android.widget.TextView;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * A simple fragment to display shirt details
  * Activities that contain this fragment must implement the
- * {@link ShirtDetailsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ShirtDetailsFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * OnFragmentInteractionListener interface
+ * to handle purchase events.
  */
 public class ShirtDetailsFragment extends Fragment {
 
+    //The currently selected shirt
     private Shirt shirt;
 
+    //the current listener on callback puchase events
     private OnFragmentInteractionListener mListener;
 
-    public ShirtDetailsFragment() {
-        // Required empty public constructor
-    }
+    //required empty public constructor
+    public ShirtDetailsFragment() {}
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
      * @return A new instance of fragment ShirtDetailsFragment.
      */
     public static ShirtDetailsFragment newInstance(Shirt shirt) {
@@ -45,6 +41,10 @@ public class ShirtDetailsFragment extends Fragment {
         return fragment;
     }
 
+    /**
+     * Standard lifecycle oncreate which restores the selected shirt
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +52,7 @@ public class ShirtDetailsFragment extends Fragment {
             shirt = (Shirt) getArguments().getSerializable("shirt");
         }
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,12 +72,12 @@ public class ShirtDetailsFragment extends Fragment {
         TextView priceView = (TextView) view.findViewById(R.id.product_price);
         priceView.setText("Kr. "+ shirt.price);
         FrameLayout buyBtn = (FrameLayout) view.findViewById(R.id.buyBtn);
+        //when the BUY button is pressed we notify the callback listener
         buyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
+                    // Notify the active callbacks interface that an item has been selected.
                     mListener.onFragmentInteraction(shirt);
                 }
             }
@@ -102,17 +103,10 @@ public class ShirtDetailsFragment extends Fragment {
     }
 
     /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
+     * This interface is used to let the main activity know that the user pressed
+     * the purchase button
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Shirt shirt);
     }
 }

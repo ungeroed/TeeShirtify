@@ -6,7 +6,8 @@ import android.util.Log;
 import java.io.Serializable;
 
 /**
- * Created by Morten on 29/08/2017.
+ * Simple class that holds a single t-shirt data
+ * the properties matches the webservice data
  */
 
 public class Shirt implements Serializable {
@@ -17,9 +18,4 @@ public class Shirt implements Serializable {
     String size;
     String name;
     int quantity;
-    //public Bitmap image;
-
-    public void print(){
-        Log.e("here",picture);
-    }
 }
