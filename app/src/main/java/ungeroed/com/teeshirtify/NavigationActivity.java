@@ -1,6 +1,7 @@
 package ungeroed.com.teeshirtify;
 
 
+import android.app.ActionBar;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.HashMap;
 
+import q.rorbin.badgeview.Badge;
 import q.rorbin.badgeview.QBadgeView;
 
 
@@ -54,9 +56,7 @@ public class NavigationActivity extends AppCompatActivity implements ShirtFragme
         // the fragment_container FrameLayout
         if (findViewById(R.id.content) != null) {
 
-            // However, if we're being restored from a previous state,
-            // then we don't need to do anything and should return or else
-            // we could end up with overlapping fragments.
+            // if restored from a previous state, just return
             if (savedInstanceState != null) {
                 Log.e("here","not null");
                 return;
@@ -71,6 +71,12 @@ public class NavigationActivity extends AppCompatActivity implements ShirtFragme
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        View decorView = getWindow().getDecorView();
+        //      Hide the status bar.
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
+
     }
 
     @Override
@@ -115,16 +121,24 @@ public class NavigationActivity extends AppCompatActivity implements ShirtFragme
         }else {
             basket.put(shirt.id, 1);
         }
-        updateBadge();
+        updateBadge(false);
     }
-
-    private void updateBadge(){
-        //update badge in navigation item
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        BottomNavigationMenuView bottomNavigationMenuView =
-                (BottomNavigationMenuView) navigation.getChildAt(0);
-        View v = bottomNavigationMenuView.getChildAt(1); // number of menu from left
-        new QBadgeView(this).bindTarget(v).setBadgeGravity(Gravity.CENTER | Gravity.END).setGravityOffset(29F,true).setBadgeNumber(getBasketSize());
+    Badge badge;
+    private void updateBadge(Boolean clear){
+        if(!clear){
+            if(badge == null) {
+                //update badge in navigation item
+                BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+                BottomNavigationMenuView bottomNavigationMenuView =
+                        (BottomNavigationMenuView) navigation.getChildAt(0);
+                View v = bottomNavigationMenuView.getChildAt(1); // number of menu from left
+                badge = new QBadgeView(this).bindTarget(v).setBadgeGravity(Gravity.CENTER | Gravity.END).setGravityOffset(29F, true).setBadgeNumber(getBasketSize());
+            } else {
+                badge.setBadgeNumber(getBasketSize());
+            }
+        } else {
+            badge.hide(true);
+        }
     }
     //create the list fragment and maybe scroll to previous location
     private void showListFragment(){
@@ -152,7 +166,7 @@ public class NavigationActivity extends AppCompatActivity implements ShirtFragme
     public void onBasketChange(Boolean place_order) {
         if(!place_order){
             basket.clear();
-            updateBadge();
+            updateBadge(true);
             Context context = getApplicationContext();
             CharSequence text = "Shopping basket cleared";
             int duration = Toast.LENGTH_SHORT;

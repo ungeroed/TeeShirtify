@@ -4,21 +4,24 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.design.internal.NavigationMenu;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import ungeroed.com.teeshirtify.dummy.DummyContent;
-import ungeroed.com.teeshirtify.dummy.DummyContent.DummyItem;
-
-import java.util.List;
+import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 /**
  * A fragment representing a list of Items.
@@ -70,9 +73,14 @@ public class ShirtFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             // Get extra data included in the Intent
-            String message = intent.getStringExtra("message");
+            Integer message = intent.getIntExtra("message", 0);
             Log.d("receiver", "Got message: " + message);
-            myAdapter.notifyDataSetChanged();
+            if(message == 200)
+                myAdapter.notifyDataSetChanged();
+            else {
+                Log.e("retrying", "fetching products again");
+                ApiHandler.getInstance().fetchInitial(getContext());
+            }
         }
     };
 
@@ -80,23 +88,65 @@ public class ShirtFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_shirt_list, container, false);
 
+
+        View filters = createFilterBar();
+        LinearLayout lin = new LinearLayout(getContext());
+        lin.setOrientation(LinearLayout.VERTICAL);
+        lin.addView(filters);
+        View view = inflater.inflate(R.layout.fragment_shirt_list, lin, false);
+        lin.addView(view);
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
             myAdapter = new MyShirtRecyclerViewAdapter(mListener);
             recyclerView.setAdapter(myAdapter);
         }
-        return view;
+        return lin;
     }
 
+    private View createFilterBar(){
+        LinearLayout filters = new LinearLayout(getContext());
+        filters.setBackgroundColor(Color.LTGRAY);
+        filters.setMinimumHeight(36);
+
+
+
+        TextView t = new TextView(getContext());
+        t.setPadding(46,9,9,9);
+        t.setText("Size: ");
+        t.setTextSize(14F);
+        filters.addView(t);
+
+        Spinner spinner = new Spinner(getContext());
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.Sizes, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+        filters.addView(spinner);
+
+        TextView col = new TextView(getContext());
+        col.setPadding(16,9,9,9);
+        col.setText("Color: ");
+        col.setTextSize(14F);
+        filters.addView(col);
+
+        Spinner color_spinner = new Spinner(getContext());
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> color_adapter = ArrayAdapter.createFromResource(getContext(), R.array.colors, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        color_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Apply the adapter to the spinner
+        color_spinner.setAdapter(adapter);
+        color_spinner.setGravity(Gravity.END);
+        filters.addView(color_spinner);
+        return filters;
+    }
 
     @Override
     public void onAttach(Context context) {

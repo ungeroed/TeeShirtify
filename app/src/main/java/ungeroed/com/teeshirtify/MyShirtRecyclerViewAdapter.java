@@ -1,6 +1,7 @@
 package ungeroed.com.teeshirtify;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,9 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import ungeroed.com.teeshirtify.ShirtFragment.OnListFragmentInteractionListener;
-import ungeroed.com.teeshirtify.dummy.DummyContent.DummyItem;
 
-import java.util.List;
+
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
@@ -20,6 +20,8 @@ import java.util.List;
 public class MyShirtRecyclerViewAdapter extends RecyclerView.Adapter<MyShirtRecyclerViewAdapter.ViewHolder> {
 
     ApiHandler handler;
+    String[] filters = new String[2];
+
     private final OnListFragmentInteractionListener mListener;
 
     public MyShirtRecyclerViewAdapter(OnListFragmentInteractionListener listener) {
@@ -36,10 +38,9 @@ public class MyShirtRecyclerViewAdapter extends RecyclerView.Adapter<MyShirtRecy
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        Shirt shirt = handler.getSingleShirt(position);
+        Shirt shirt = handler.getSingleShirt(position, filters);
         holder.mItem = shirt;
         holder.mIdView.setText(shirt.name);
-        holder.mContentView.setText("kr."+shirt.price);
         ApiHandler.getInstance().fetchImageFromUrl(holder.mImageView,shirt);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -54,15 +55,15 @@ public class MyShirtRecyclerViewAdapter extends RecyclerView.Adapter<MyShirtRecy
         });
     }
 
+
     @Override
     public int getItemCount() {
-        return handler.getProductCount();
+        return handler.getProductCount(filters);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mIdView;
-        public final TextView mContentView;
         public ImageView mImageView;
         public Shirt mItem;
 
@@ -70,13 +71,18 @@ public class MyShirtRecyclerViewAdapter extends RecyclerView.Adapter<MyShirtRecy
             super(view);
             mView = view;
             mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
             mImageView = (ImageView) view.findViewById(R.id.thumbImage);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '";
         }
+    }
+
+    public void setFilters(String size, String color){
+        filters[0] = size;
+        filters[1] = color;
+        this.notifyDataSetChanged();
     }
 }

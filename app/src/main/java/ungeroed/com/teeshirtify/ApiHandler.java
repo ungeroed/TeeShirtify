@@ -126,7 +126,10 @@ public class ApiHandler {
                 if(responseCode == HttpURLConnection.HTTP_OK){
                     parseResult(urlConnection.getInputStream());
                 }else{
-                    Log.e("not okay: ", responseCode+"");
+                    Intent intent = new Intent("custom-event-name");
+                    // You can also include some extra data.
+                    intent.putExtra("message", 500);
+                    LocalBroadcastManager.getInstance(params[0]).sendBroadcast(intent);
                 }
 
             } catch (MalformedURLException e) {
@@ -214,11 +217,20 @@ public class ApiHandler {
         }
     }
 
-    public Shirt getSingleShirt(int index){
+    private ArrayList<Shirt> getFilteredProducts(String[] filters){
+        ArrayList<Shirt> filtered = new ArrayList<Shirt>();
+        products.stream().filter((s)->{
+            return ((s.size.equals(filters[0]) || filters[0].equals("All")) &&
+                    (s.colour.equals(filters[1]) || filters[1].equals("All")));
+        });
+        return filtered;
+    }
+
+    public Shirt getSingleShirt(int index, String[] filters){
         return products.get(index);
     }
 
-    public int getProductCount(){
+    public int getProductCount(String[] filters){
         return products.size();
     }
 
