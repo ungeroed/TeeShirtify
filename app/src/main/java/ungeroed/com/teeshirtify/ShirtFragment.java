@@ -76,8 +76,6 @@ public class ShirtFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
         View filters = createFilterBar();
         LinearLayout lin = new LinearLayout(getContext());
         lin.setOrientation(LinearLayout.VERTICAL);

@@ -13,9 +13,8 @@ import ungeroed.com.teeshirtify.ShirtFragment.OnListFragmentInteractionListener;
 
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
+ *
  */
 public class MyShirtRecyclerViewAdapter extends RecyclerView.Adapter<MyShirtRecyclerViewAdapter.ViewHolder> {
 
@@ -40,15 +39,15 @@ public class MyShirtRecyclerViewAdapter extends RecyclerView.Adapter<MyShirtRecy
     public void onBindViewHolder(final ViewHolder holder, int position) {
         Shirt shirt = handler.getSingleShirt(position, filters);
         holder.mItem = shirt;
-        holder.mIdView.setText(shirt.name);
+        holder.title.setText(shirt.name.toUpperCase());
+        holder.description.setText(String.format("Color: %s, Size: %s",shirt.colour,shirt.size));
         ApiHandler.getInstance().fetchImageFromUrl(holder.mImageView,shirt);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
+                    //Notify the callback
                     mListener.onListFragmentInteraction(holder.mItem);
                 }
             }
@@ -63,15 +62,17 @@ public class MyShirtRecyclerViewAdapter extends RecyclerView.Adapter<MyShirtRecy
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
+        public final TextView title;
+        public final TextView description;
         public ImageView mImageView;
         public Shirt mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
-            mImageView = (ImageView) view.findViewById(R.id.thumbImage);
+            title = (TextView) view.findViewById(R.id.firstLine);
+            description = (TextView) view.findViewById(R.id.secondLine);
+            mImageView = (ImageView) view.findViewById(R.id.icon);
         }
 
         @Override
@@ -86,9 +87,5 @@ public class MyShirtRecyclerViewAdapter extends RecyclerView.Adapter<MyShirtRecy
         if(color != null)
             filters[1] = color;
         this.notifyDataSetChanged();
-    }
-
-    public String[] getFilters(){
-        return filters;
     }
 }
