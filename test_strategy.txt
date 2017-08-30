@@ -1,0 +1,16 @@
+Brief notes on testing strategy:
+
+Manual testing:
+First of all I would manually attempt to crash the app. To catch it off guard, starting simultaneous downloads or load taxing views swiftly after another. 
+
+ADB Monkey:
+i would use the monkey utility from the adb to to pressure the app and to attempt to crash it to find bugs. 
+Note: handing the device to children is also a viable option here :-)
+
+Unit testing:
+I would test all public methods and employ a fast proxy service to mock and test data communication. (just a basic service using either node or python flask etc.).
+
+UI testing:
+i would attempt to use the automated UI testing tool, although I find its succesrate  hit and miss. 
+
+I guess that pretty much covers it. 
