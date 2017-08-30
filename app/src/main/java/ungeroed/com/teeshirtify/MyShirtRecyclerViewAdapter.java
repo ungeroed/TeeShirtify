@@ -82,6 +82,11 @@ public class MyShirtRecyclerViewAdapter extends RecyclerView.Adapter<MyShirtRecy
     }
 
 
+    /**
+     * this methods updates the currently selected filters
+     * @param size
+     * @param color
+     */
     public void setFilters(String size, String color){
         if(size != null)
             filters[0] = size;
@@ -94,6 +99,9 @@ public class MyShirtRecyclerViewAdapter extends RecyclerView.Adapter<MyShirtRecy
 
     // ------------------------- UI methods ---------------------------------
 
+    /**
+     * this contents of this method matches the custom layout xml
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView title;
@@ -109,10 +117,6 @@ public class MyShirtRecyclerViewAdapter extends RecyclerView.Adapter<MyShirtRecy
             mImageView = (ImageView) view.findViewById(R.id.icon);
         }
 
-        @Override
-        public String toString() {
-            return super.toString() + " '";
-        }
     }
 
     // ------------------------- UI methods end ---------------------------------
