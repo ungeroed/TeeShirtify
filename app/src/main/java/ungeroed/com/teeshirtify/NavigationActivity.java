@@ -4,22 +4,36 @@ package ungeroed.com.teeshirtify;
 import android.app.ActionBar;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationMenuView;
+import android.support.design.internal.NavigationMenu;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+
 import java.util.HashMap;
 
 import q.rorbin.badgeview.Badge;
 import q.rorbin.badgeview.QBadgeView;
+
+import static ungeroed.com.teeshirtify.CheckoutFragment.ORDER_EVENTS;
 
 
 public class NavigationActivity extends AppCompatActivity implements ShirtFragment.OnListFragmentInteractionListener, ShirtDetailsFragment.OnFragmentInteractionListener , CheckoutFragment.BasketChangeListener{
@@ -51,6 +65,9 @@ public class NavigationActivity extends AppCompatActivity implements ShirtFragme
 
         basket = new HashMap<Integer, Integer>();
         super.onCreate(savedInstanceState);
+        //use the apihandler singleton to fetch the data in a separate thread
+        ApiHandler.getInstance().fetchInitial(getApplicationContext());
+
         setContentView(R.layout.activity_naviagtion);
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout
@@ -63,7 +80,7 @@ public class NavigationActivity extends AppCompatActivity implements ShirtFragme
             }
 
             // Create a new Fragment to be placed in the activity layout
-            ShirtFragment firstFragment = ShirtFragment.newInstance(1);
+            ShirtFragment firstFragment = new ShirtFragment();
 
             // Add the fragment to the 'fragment_container' FrameLayout
             getFragmentManager().beginTransaction().add(R.id.content, firstFragment).commit();
@@ -76,6 +93,9 @@ public class NavigationActivity extends AppCompatActivity implements ShirtFragme
         //      Hide the status bar.
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
+
+        LocalBroadcastManager.getInstance(NavigationActivity.this).registerReceiver(mMessageReceiver,
+                new IntentFilter(ORDER_EVENTS));
 
     }
 
@@ -142,7 +162,7 @@ public class NavigationActivity extends AppCompatActivity implements ShirtFragme
     }
     //create the list fragment and maybe scroll to previous location
     private void showListFragment(){
-        ShirtFragment listFragment = ShirtFragment.newInstance(1);
+        ShirtFragment listFragment = new ShirtFragment();
         getFragmentManager().beginTransaction().replace(R.id.content, listFragment).commit();
 
     }
@@ -184,4 +204,49 @@ public class NavigationActivity extends AppCompatActivity implements ShirtFragme
 
 
     }
+
+    private AlertDialog shown;
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Integer status = intent.getIntExtra("response",400);
+            if(status != 200){
+                CharSequence text = "Could not send order, please try again";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+                return;
+            }
+            if(shown != null){
+                shown.show();
+            } else {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(NavigationActivity.this);
+
+                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                View v = inflater.inflate(R.layout.order_dialog, null, false);
+                TextView textview = (TextView) v.findViewById(R.id.order_textview);
+                textview.setText("Sucessfully placed order!");
+                ImageView imageview = (ImageView) v.findViewById(R.id.order_successful);
+                Glide.with(NavigationActivity.this)
+                        .load(R.drawable.checkmark)
+                        .into(imageview);
+                dialog.setView(v);
+                dialog.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                dialog.show();
+            }
+            onBasketChange(false);
+            showListFragment();
+            BottomNavigationView bottomNavigationView;
+            bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
+            bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+
+        }
+    };
+
 }

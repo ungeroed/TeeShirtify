@@ -1,5 +1,6 @@
 package ungeroed.com.teeshirtify;
 
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -36,12 +37,15 @@ import java.util.HashMap;
  */
 public class CheckoutFragment extends Fragment {
 
-    private BasketChangeListener mListener;
+    private static BasketChangeListener mListener;
 
     private HashMap<Integer, Integer> basket;
 
     static String ORDER_EVENTS = "order-events";
     private Integer totalPrice = 0;
+
+
+
     public CheckoutFragment() {
         // Required empty public constructor
     }
@@ -65,8 +69,7 @@ public class CheckoutFragment extends Fragment {
         if (getArguments() != null) {
             basket = (HashMap<Integer,Integer>)getArguments().getSerializable("basket");
         }
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver,
-                new IntentFilter(ORDER_EVENTS));
+
     }
 
     @Override
@@ -121,7 +124,7 @@ public class CheckoutFragment extends Fragment {
             public void onClick(View view) {
 
                 mListener.onBasketChange(true);
-                showOrderDialog();
+
             }
         });
         return view;
@@ -168,58 +171,6 @@ public class CheckoutFragment extends Fragment {
         mListener = null;
     }
 
-    AlertDialog shown;
-    public void showOrderDialog(){
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-
-        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        View v = inflater.inflate(R.layout.order_dialog,null,false);
-        ImageView imageview = (ImageView) v.findViewById(R.id.order_processing_image);
-        Glide.with(getContext())
-                .load(R.drawable.animation_processing)
-                .into(imageview);
-        dialog.setView(v);
-
-        shown = dialog.show();
-
-    }
-
-    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            shown.hide();
-            Integer status = intent.getIntExtra("response",400);
-            if(status != 200){
-                CharSequence text = "Could not send order, please try again";
-                int duration = Toast.LENGTH_SHORT;
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
-                return;
-            }
-            AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-
-            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-            View v = inflater.inflate(R.layout.order_dialog,null,false);
-            TextView textview = (TextView) v.findViewById(R.id.order_textview);
-            textview.setText("Sucessfully placed order!");
-            ImageView imageview = (ImageView) v.findViewById(R.id.order_processing_image);
-            Glide.with(getContext())
-                    .load(R.drawable.checkmark)
-                    .into(imageview);
-            dialog.setView(v);
-            dialog.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    shown.hide();
-                }
-            });
-            shown = dialog.show();
-
-            mListener.onBasketChange(false);
-        }
-    };
 
     /**
      * This interface must be implemented by activities that contain this
@@ -232,7 +183,6 @@ public class CheckoutFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface BasketChangeListener {
-        // TODO: Update argument type and name
         void onBasketChange(Boolean place_order);
     }
 }

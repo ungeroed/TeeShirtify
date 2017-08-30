@@ -18,6 +18,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -31,12 +32,12 @@ import android.widget.TextView;
  */
 public class ShirtFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
+
     private OnListFragmentInteractionListener mListener;
     MyShirtRecyclerViewAdapter myAdapter;
+
+    private static int current_size = 0;
+    private static int current_color = 0;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -45,23 +46,11 @@ public class ShirtFragment extends Fragment {
     public ShirtFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static ShirtFragment newInstance(int columnCount) {
-        ShirtFragment fragment = new ShirtFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //use the apihandler singleton to fetch the data in a separate thread
-        ApiHandler.getInstance().fetchInitial(getContext());
         if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            Integer size = getArguments().getInt("size");
         }
 
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver,
@@ -74,7 +63,6 @@ public class ShirtFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             // Get extra data included in the Intent
             Integer message = intent.getIntExtra("message", 0);
-            Log.d("receiver", "Got message: " + message);
             if(message == 200)
                 myAdapter.notifyDataSetChanged();
             else {
@@ -120,14 +108,27 @@ public class ShirtFragment extends Fragment {
         t.setTextSize(14F);
         filters.addView(t);
 
-        Spinner spinner = new Spinner(getContext());
+        Spinner size_spinner = new Spinner(getContext());
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.Sizes, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
-        filters.addView(spinner);
+        size_spinner.setAdapter(adapter);
+        size_spinner.setSelection(current_size);
+        size_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                current_size = i;
+                myAdapter.setFilters((String) adapterView.getItemAtPosition(i),null);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        filters.addView(size_spinner);
 
         TextView col = new TextView(getContext());
         col.setPadding(16,9,9,9);
@@ -142,7 +143,21 @@ public class ShirtFragment extends Fragment {
         color_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         // Apply the adapter to the spinner
-        color_spinner.setAdapter(adapter);
+        color_spinner.setAdapter(color_adapter);
+        color_spinner.setSelection(current_color);
+        //set actionListener on spinner to react to changes
+        color_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                current_color = i;
+                myAdapter.setFilters(null, (String) adapterView.getItemAtPosition(i));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         color_spinner.setGravity(Gravity.END);
         filters.addView(color_spinner);
         return filters;
@@ -164,6 +179,7 @@ public class ShirtFragment extends Fragment {
         super.onDetach();
         mListener = null;
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mMessageReceiver);
+
     }
 
     @Override
@@ -176,7 +192,7 @@ public class ShirtFragment extends Fragment {
      * selecting an item should show details.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
+        //pops the details fragment
         void onListFragmentInteraction(Shirt item);
     }
 }

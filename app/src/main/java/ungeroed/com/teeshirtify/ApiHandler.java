@@ -57,7 +57,7 @@ public class ApiHandler {
             if(basket.isEmpty()){return;}
             final AtomicInteger total = new AtomicInteger(0);
             for (Integer key : basket.keySet()){
-                total.addAndGet(getSingleShirtWithID(key).price);
+                int ne = total.addAndGet((getSingleShirtWithID(key).price)*basket.get(key));
             }
 
             Thread thread = new Thread(new Runnable() {
@@ -86,7 +86,7 @@ public class ApiHandler {
                         order.put("basket", basket);
                         Log.i("JSON", order.toString());
                         DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-                        //os.writeBytes(URLEncoder.encode(jsonParam.toString(), "UTF-8"));
+
                         os.writeBytes(order.toString());
 
                         os.flush();
@@ -219,19 +219,20 @@ public class ApiHandler {
 
     private ArrayList<Shirt> getFilteredProducts(String[] filters){
         ArrayList<Shirt> filtered = new ArrayList<Shirt>();
-        products.stream().filter((s)->{
-            return ((s.size.equals(filters[0]) || filters[0].equals("All")) &&
-                    (s.colour.equals(filters[1]) || filters[1].equals("All")));
-        });
+        for(Shirt s : products){
+            if ((s.size.toLowerCase().equals(filters[0].toLowerCase()) || filters[0].equals("All")) &&
+                (s.colour.toLowerCase().equals(filters[1].toLowerCase()) || filters[1].equals("All")))
+                    filtered.add(s);
+        }
         return filtered;
     }
 
     public Shirt getSingleShirt(int index, String[] filters){
-        return products.get(index);
+        return getFilteredProducts(filters).get(index);
     }
 
     public int getProductCount(String[] filters){
-        return products.size();
+        return getFilteredProducts(filters).size();
     }
 
     //this is rather slow on large amounts of products

@@ -20,7 +20,7 @@ import ungeroed.com.teeshirtify.ShirtFragment.OnListFragmentInteractionListener;
 public class MyShirtRecyclerViewAdapter extends RecyclerView.Adapter<MyShirtRecyclerViewAdapter.ViewHolder> {
 
     ApiHandler handler;
-    String[] filters = new String[2];
+    String[] filters = new String[]{"All", "All"};
 
     private final OnListFragmentInteractionListener mListener;
 
@@ -81,8 +81,14 @@ public class MyShirtRecyclerViewAdapter extends RecyclerView.Adapter<MyShirtRecy
     }
 
     public void setFilters(String size, String color){
-        filters[0] = size;
-        filters[1] = color;
+        if(size != null)
+            filters[0] = size;
+        if(color != null)
+            filters[1] = color;
         this.notifyDataSetChanged();
+    }
+
+    public String[] getFilters(){
+        return filters;
     }
 }
