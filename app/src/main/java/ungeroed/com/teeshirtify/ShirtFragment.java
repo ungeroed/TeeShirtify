@@ -21,6 +21,10 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
+
 /**
  * A fragment representing a list of shirts.
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
@@ -32,8 +36,9 @@ public class ShirtFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
 
     //the custom listviewadapter
-    MyShirtRecyclerViewAdapter myAdapter;
+    @Inject MyShirtRecyclerViewAdapter myAdapter;
 
+    @Inject ApiHandler handler;
     //Fragment variables are used to hold current filter selections as opposed to savedInstancestate
     //this is because lifecyclemethods are not called when fragments are replaced
     private static int current_size = 0;
@@ -46,7 +51,6 @@ public class ShirtFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         //register reciver for api shirts get request, so we can refresh view when data is fetched
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver,
                 new IntentFilter("custom-event-name"));
@@ -77,7 +81,7 @@ public class ShirtFragment extends Fragment {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            myAdapter = new MyShirtRecyclerViewAdapter(mListener);
+            //myAdapter = new MyShirtRecyclerViewAdapter(mListener);
             recyclerView.setAdapter(myAdapter);
         }
         return lin;
@@ -85,6 +89,7 @@ public class ShirtFragment extends Fragment {
 
     @Override
     public void onAttach(Context context) {
+        AndroidInjection.inject(this);
         super.onAttach(context);
         //attache the callback listener
         if (context instanceof OnListFragmentInteractionListener) {
@@ -223,7 +228,7 @@ public class ShirtFragment extends Fragment {
                 myAdapter.notifyDataSetChanged();
             else {
                 Log.d("retrying", "fetching products again");
-                ApiHandler.getInstance().fetchInitial(getContext());
+                handler.fetchInitial(getContext());
             }
         }
     };

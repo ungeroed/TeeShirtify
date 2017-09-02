@@ -24,6 +24,9 @@ import com.google.gson.reflect.TypeToken;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import javax.inject.Inject;
+
+
 /**
  * This class handles all interaction with the mock shirts API.
  * It also functions as the model for the MVC - for simplicity.
@@ -32,25 +35,19 @@ import org.json.JSONObject;
  */
 public class ApiHandler {
 
-    //Holds the singleton instance
-    private static ApiHandler instance;
-
     //Fetched products
-    ArrayList<Shirt> products;
+    @Inject ArrayList<Shirt> products;
+
+
+    AsyncShirtFetcher shirt_fetcherProvider = new AsyncShirtFetcher();
 
     //----------------------- Constructor methods ----------------------------
 
     //private constructor to force singleton instantiation
-    private ApiHandler(){
-        products = new ArrayList<Shirt>();
-    }
+    @Inject
+    public ApiHandler(){
+        //DaggerAppComponent.create().inject(this);
 
-    //static method to retrieve singleton instance
-    public static ApiHandler getInstance(){
-        if(instance == null){
-            instance = new ApiHandler();
-        }
-        return instance;
     }
 
     //----------------------- Constructor methods end ------------------------
@@ -116,8 +113,9 @@ public class ApiHandler {
      * @param context
      */
     public void fetchInitial(Context context){
-        new shirt_fetcher().execute(context);
+        shirt_fetcherProvider.execute(context);
     }
+
 
     /**
      * AsyncTask designed to fetch shirt details from the api
@@ -125,7 +123,8 @@ public class ApiHandler {
      * it broadcasts the statuscode so that the receiver can respond EG. by
      * retrying if unsuccessful
      */
-    private class shirt_fetcher extends AsyncTask<Context, Context, Context> {
+    private class AsyncShirtFetcher extends AsyncTask<Context, Void, Context> {
+
 
         @Override
         protected Context doInBackground(Context[] params) {
@@ -173,54 +172,57 @@ public class ApiHandler {
             intent.putExtra("message", 200);
             LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
         }
-    }
 
-    /**
-     * This method Converting InputStream to list of shirts.
-     * it uses Gson for an automatic Unmarshalling of the json response.
-     * @param in
-     */
-    private void parseResult(InputStream in) {
-        BufferedReader reader = null;
-        StringBuffer response = new StringBuffer();
-        try {
-            reader = new BufferedReader(new InputStreamReader(in));
-            //NOTE:probably use stringbuilder instead
-            String line = "";
-            while ((line = reader.readLine()) != null) {
-                response.append(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+        /**
+         * This method Converting InputStream to list of shirts.
+         * it uses Gson for an automatic Unmarshalling of the json response.
+         * @param in
+         */
+        private void parseResult(InputStream in) {
+            BufferedReader reader = null;
+            StringBuffer response = new StringBuffer();
+            try {
+                reader = new BufferedReader(new InputStreamReader(in));
+                //NOTE:probably use stringbuilder instead
+                String line = "";
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
-        }
-        //we use Gson for unmarshalling based on specific class type
-        Gson gson = new Gson();
-        //since we employ reflection here, it is not recommended if blazing speed is required.
-        ArrayList<Shirt> fetched_products = gson.fromJson(response.toString(), new TypeToken<ArrayList<Shirt>>(){}.getType());
-        products = sanitizeProducts(fetched_products);
+            //we use Gson for unmarshalling based on specific class type
+            Gson gson = new Gson();
+            //since we employ reflection here, it is not recommended if blazing speed is required.
+            ArrayList<Shirt> fetched_products = gson.fromJson(response.toString(), new TypeToken<ArrayList<Shirt>>(){}.getType());
+            sanitizeProducts(fetched_products);
 
+        }
     }
+
+
 
     /**
      * This method removes the corrupt data entries fetched form the server
      * @param list
      * @return
      */
-    private ArrayList<Shirt> sanitizeProducts(ArrayList<Shirt> list){
+    public ArrayList<Shirt> sanitizeProducts(ArrayList<Shirt> list){
         ArrayList<Shirt> sanitized = new ArrayList<>();
         for (Shirt shirt : list){
             if(shirt.quantity == 0 || shirt.name.equals("string"))
                 continue; //NOTE: could check for duplicate items here as well.
             sanitized.add(shirt);
         }
+        products = sanitized;
         return sanitized;
     }
 

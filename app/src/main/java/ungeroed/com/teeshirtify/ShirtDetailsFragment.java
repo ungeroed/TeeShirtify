@@ -10,6 +10,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import javax.inject.Inject;
+
 
 /**
  * A simple fragment to display shirt details
@@ -25,6 +27,8 @@ public class ShirtDetailsFragment extends Fragment {
     //the current listener on callback puchase events
     private OnFragmentInteractionListener mListener;
 
+    @Inject
+    ApiHandler handler;
     //required empty public constructor
     public ShirtDetailsFragment() {}
 
@@ -60,7 +64,7 @@ public class ShirtDetailsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_shirt_details, container, false);
         ImageView mImageView = (ImageView) view.findViewById(R.id.largeImage);
-        ApiHandler.getInstance().fetchImageFromUrl(mImageView,shirt);
+        handler.fetchImageFromUrl(mImageView,shirt);
         TextView nameView = (TextView) view.findViewById(R.id.product_name);
         nameView.setText(shirt.name);
         TextView colorView = (TextView) view.findViewById(R.id.product_color);

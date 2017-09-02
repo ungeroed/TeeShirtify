@@ -5,11 +5,12 @@ import android.util.Log;
 
 import java.io.Serializable;
 
+import javax.inject.Inject;
+
 /**
  * Simple class that holds a single t-shirt data
  * the properties matches the webservice data
  */
-
 public class Shirt implements Serializable {
     int id;
     int price;
@@ -18,4 +19,7 @@ public class Shirt implements Serializable {
     String size;
     String name;
     int quantity;
+
+    @Inject
+    public Shirt(){}
 }

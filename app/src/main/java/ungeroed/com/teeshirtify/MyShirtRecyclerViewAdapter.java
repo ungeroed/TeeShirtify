@@ -8,6 +8,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import javax.inject.Inject;
+
+import dagger.AppComponent;
+import dagger.DaggerAppComponent;
+import dagger.android.AndroidInjection;
 import ungeroed.com.teeshirtify.ShirtFragment.OnListFragmentInteractionListener;
 
 
@@ -20,7 +25,7 @@ import ungeroed.com.teeshirtify.ShirtFragment.OnListFragmentInteractionListener;
 public class MyShirtRecyclerViewAdapter extends RecyclerView.Adapter<MyShirtRecyclerViewAdapter.ViewHolder> {
 
     //ApiHandler class fetches data from webservice
-    ApiHandler handler;
+    @Inject ApiHandler handler;
 
     //these are the currently employed filters
     String[] filters = new String[]{"All", "All"};
@@ -35,9 +40,16 @@ public class MyShirtRecyclerViewAdapter extends RecyclerView.Adapter<MyShirtRecy
      * standard constructor
      * @param listener callback listener implementing correct interface
      */
+    @Inject
     public MyShirtRecyclerViewAdapter(OnListFragmentInteractionListener listener) {
-        handler = ApiHandler.getInstance();
         mListener = listener;
+        DaggerAppComponent.create().inject(this);
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+
+        super.onAttachedToRecyclerView(recyclerView);
     }
 
     @Override
@@ -55,7 +67,7 @@ public class MyShirtRecyclerViewAdapter extends RecyclerView.Adapter<MyShirtRecy
         holder.title.setText(shirt.name.toUpperCase());
         holder.description.setText(String.format("Color: %s, Size: %s",shirt.colour,shirt.size));
         //start fetching the image asynchronously
-        ApiHandler.getInstance().fetchImageFromUrl(holder.mImageView,shirt);
+        handler.fetchImageFromUrl(holder.mImageView,shirt);
 
         //set actionlistener
         holder.mView.setOnClickListener(new View.OnClickListener() {

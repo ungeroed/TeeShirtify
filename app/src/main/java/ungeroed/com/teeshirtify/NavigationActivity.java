@@ -5,7 +5,6 @@ package ungeroed.com.teeshirtify;
  * and handles persistance between app restarts.
  */
 
-import android.app.ActionBar;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
@@ -17,12 +16,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationMenuView;
-import android.support.design.internal.NavigationMenu;
+
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -37,6 +36,9 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.HashMap;
 
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
 import q.rorbin.badgeview.Badge;
 import q.rorbin.badgeview.QBadgeView;
 
@@ -51,13 +53,19 @@ public class NavigationActivity extends AppCompatActivity implements ShirtFragme
     //displays an items count on the shopping basket
     private Badge badge;
 
+    @Inject ApiHandler handler;
+
+    @Inject
+    public NavigationActivity(){}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
+
         super.onCreate(savedInstanceState);
 
         //use the Apihandler singleton to fetch the data in a separate thread
-        ApiHandler.getInstance().fetchInitial(getApplicationContext());
+        handler.fetchInitial(getApplicationContext());
 
         setContentView(R.layout.activity_naviagtion);
         // Check that the activity is using the layout version with
@@ -202,7 +210,7 @@ public class NavigationActivity extends AppCompatActivity implements ShirtFragme
             int duration = Toast.LENGTH_SHORT;
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
-            ApiHandler.getInstance().placeOrder(getApplicationContext(), basket);
+            handler.placeOrder(getApplicationContext(), basket);
         }
 
 
