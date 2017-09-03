@@ -36,7 +36,7 @@ import javax.inject.Inject;
 public class ApiHandler {
 
     //Fetched products
-    @Inject ArrayList<Shirt> products;
+    ArrayList<Shirt> products;
 
 
     AsyncShirtFetcher shirt_fetcherProvider = new AsyncShirtFetcher();
@@ -44,9 +44,9 @@ public class ApiHandler {
     //----------------------- Constructor methods ----------------------------
 
     //private constructor to force singleton instantiation
-    @Inject
     public ApiHandler(){
         //DaggerAppComponent.create().inject(this);
+        if (products == null){products  = new ArrayList<Shirt>(); }
 
     }
 

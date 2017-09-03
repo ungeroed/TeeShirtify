@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import javax.inject.Inject;
 
+import dagger.DaggerAppComponent;
+
 
 /**
  * A simple fragment to display shirt details
@@ -27,8 +29,8 @@ public class ShirtDetailsFragment extends Fragment {
     //the current listener on callback puchase events
     private OnFragmentInteractionListener mListener;
 
-    @Inject
-    ApiHandler handler;
+
+    @Inject ApiHandler handler;
     //required empty public constructor
     public ShirtDetailsFragment() {}
 
@@ -91,6 +93,7 @@ public class ShirtDetailsFragment extends Fragment {
 
     @Override
     public void onAttach(Context context) {
+        DaggerAppComponent.create().inject(this);
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;

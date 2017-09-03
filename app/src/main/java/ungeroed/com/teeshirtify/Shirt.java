@@ -20,6 +20,5 @@ public class Shirt implements Serializable {
     String name;
     int quantity;
 
-    @Inject
     public Shirt(){}
 }

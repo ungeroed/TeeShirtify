@@ -55,7 +55,6 @@ public class NavigationActivity extends AppCompatActivity implements ShirtFragme
 
     @Inject ApiHandler handler;
 
-    @Inject
     public NavigationActivity(){}
 
     @Override
@@ -315,7 +314,8 @@ public class NavigationActivity extends AppCompatActivity implements ShirtFragme
     private void showCheckoutFragment(){
         Bundle checkout_bundle = new Bundle();
         checkout_bundle.putSerializable("basket", basket);
-        CheckoutFragment checkoutFragment = CheckoutFragment.newInstance(checkout_bundle);
+        CheckoutFragment checkoutFragment = new CheckoutFragment();
+        checkoutFragment.setArguments(checkout_bundle);
         getFragmentManager().beginTransaction().replace(R.id.content, checkoutFragment).commit();
     }
 

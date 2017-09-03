@@ -2,6 +2,7 @@ package dagger.FeatureSubComponent;
 
 import dagger.Subcomponent;
 import dagger.android.AndroidInjector;
+import ungeroed.com.teeshirtify.MyShirtRecyclerViewAdapter;
 import ungeroed.com.teeshirtify.NavigationActivity;
 
 /**

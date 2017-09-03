@@ -36,7 +36,7 @@ public class ShirtFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
 
     //the custom listviewadapter
-    @Inject MyShirtRecyclerViewAdapter myAdapter;
+    MyShirtRecyclerViewAdapter myAdapter;
 
     @Inject ApiHandler handler;
     //Fragment variables are used to hold current filter selections as opposed to savedInstancestate
@@ -81,7 +81,7 @@ public class ShirtFragment extends Fragment {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            //myAdapter = new MyShirtRecyclerViewAdapter(mListener);
+            myAdapter = new MyShirtRecyclerViewAdapter(mListener, handler);
             recyclerView.setAdapter(myAdapter);
         }
         return lin;

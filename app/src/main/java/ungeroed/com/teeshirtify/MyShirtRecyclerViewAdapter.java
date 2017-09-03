@@ -10,9 +10,7 @@ import android.widget.TextView;
 
 import javax.inject.Inject;
 
-import dagger.AppComponent;
 import dagger.DaggerAppComponent;
-import dagger.android.AndroidInjection;
 import ungeroed.com.teeshirtify.ShirtFragment.OnListFragmentInteractionListener;
 
 
@@ -25,7 +23,7 @@ import ungeroed.com.teeshirtify.ShirtFragment.OnListFragmentInteractionListener;
 public class MyShirtRecyclerViewAdapter extends RecyclerView.Adapter<MyShirtRecyclerViewAdapter.ViewHolder> {
 
     //ApiHandler class fetches data from webservice
-    @Inject ApiHandler handler;
+    ApiHandler handler;
 
     //these are the currently employed filters
     String[] filters = new String[]{"All", "All"};
@@ -40,10 +38,10 @@ public class MyShirtRecyclerViewAdapter extends RecyclerView.Adapter<MyShirtRecy
      * standard constructor
      * @param listener callback listener implementing correct interface
      */
-    @Inject
-    public MyShirtRecyclerViewAdapter(OnListFragmentInteractionListener listener) {
+
+    public MyShirtRecyclerViewAdapter(OnListFragmentInteractionListener listener, ApiHandler handler) {
         mListener = listener;
-        DaggerAppComponent.create().inject(this);
+        this.handler = handler;
     }
 
     @Override

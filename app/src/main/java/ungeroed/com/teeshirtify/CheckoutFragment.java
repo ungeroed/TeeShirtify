@@ -15,6 +15,8 @@ import java.util.HashMap;
 
 import javax.inject.Inject;
 
+import dagger.DaggerAppComponent;
+
 
 /**
  * A simple fragment to display the contents of the shopping basket.
@@ -31,22 +33,10 @@ public class CheckoutFragment extends Fragment {
     static String ORDER_EVENTS = "order-events";
     //current calculated total price
     private Integer totalPrice = 0;
-    ApiHandler handler;
+    @Inject ApiHandler handler;
 
     //------------------------------ instantiation methods -----------------------
 
-    // Required empty public constructor
-    public CheckoutFragment() {}
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment
-     */
-    public static CheckoutFragment newInstance(Bundle basket) {
-        CheckoutFragment fragment = new CheckoutFragment();
-        fragment.setArguments(basket);
-        return fragment;
-    }
 
     //------------------------------ instantiation methods -----------------------
 
@@ -128,6 +118,7 @@ public class CheckoutFragment extends Fragment {
 
     @Override
     public void onAttach(Context context) {
+        ((App) context.getApplicationContext()).getAppComponent().inject(this);
         super.onAttach(context);
         if (context instanceof BasketChangeListener) {
             mListener = (BasketChangeListener) context;

@@ -7,6 +7,7 @@ import ungeroed.com.teeshirtify.ApiHandler;
 import ungeroed.com.teeshirtify.App;
 import ungeroed.com.teeshirtify.CheckoutFragment;
 import ungeroed.com.teeshirtify.MyShirtRecyclerViewAdapter;
+import ungeroed.com.teeshirtify.ShirtDetailsFragment;
 import ungeroed.com.teeshirtify.ShirtFragment;
 
 /**
@@ -15,10 +16,11 @@ import ungeroed.com.teeshirtify.ShirtFragment;
 
 @Singleton
 @Component(modules = {AppModule.class,  ApiHandlerModule.class, AndroidInjectionModule.class,
-        BuildersModule.class, ShirtModule.class, OnFragmentInteractionListenerModule.class})
+        BuildersModule.class})
 public interface AppComponent {
     void inject(App app);
     void inject(ShirtFragment target);
+    void inject(ShirtDetailsFragment target);
     void inject(CheckoutFragment target);
     void inject(MyShirtRecyclerViewAdapter target);
     void inject(ApiHandler target);
