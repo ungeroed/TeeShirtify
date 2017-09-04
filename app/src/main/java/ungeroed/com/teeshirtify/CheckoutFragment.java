@@ -14,8 +14,7 @@ import android.widget.TextView;
 import java.util.HashMap;
 
 import javax.inject.Inject;
-
-import dagger.DaggerAppComponent;
+import dagger.android.AndroidInjection;
 
 
 /**
@@ -35,12 +34,12 @@ public class CheckoutFragment extends Fragment {
     private Integer totalPrice = 0;
     @Inject ApiHandler handler;
 
-    //------------------------------ instantiation methods -----------------------
+    //region ------------------------------ instantiation methods -----------------------
 
 
-    //------------------------------ instantiation methods -----------------------
+    //endregion ------------------------------ instantiation methods -----------------------
 
-    //------------------------------ lifecycle methods ---------------------------
+    //region------------------------------ lifecycle methods ---------------------------
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -118,7 +117,7 @@ public class CheckoutFragment extends Fragment {
 
     @Override
     public void onAttach(Context context) {
-        ((App) context.getApplicationContext()).getAppComponent().inject(this);
+        AndroidInjection.inject(this);
         super.onAttach(context);
         if (context instanceof BasketChangeListener) {
             mListener = (BasketChangeListener) context;
@@ -134,9 +133,9 @@ public class CheckoutFragment extends Fragment {
         mListener = null;
     }
 
-    //------------------------------ Lifecycle methods end -----------------------
+    //endregion ------------------------------ Lifecycle methods end -----------------------
 
-    //------------------------------ UI methods ----------------------------------
+    //region ------------------------------ UI methods ----------------------------------
 
     /**
      * This method creates a single line to display the purchased product, the amount
@@ -171,7 +170,7 @@ public class CheckoutFragment extends Fragment {
         return line;
     }
 
-    //------------------------------ UI methods end -----------------------
+    //endregion ------------------------------ UI methods end -----------------------
 
     /**
      * Callback interface. The method uses a boolean parameter to determine which button was

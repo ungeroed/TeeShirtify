@@ -1,12 +1,11 @@
 package dagger;
 
 import javax.inject.Singleton;
-
 import ungeroed.com.teeshirtify.ApiHandler;
 
 
 /**
- * Created by Morten on 03/09/2017.
+ * Module to handle lifecycle and enforce singleton pattern for ApiHandler
  */
 @Module
 public class ApiHandlerModule {

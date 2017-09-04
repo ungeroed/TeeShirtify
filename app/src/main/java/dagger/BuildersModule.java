@@ -2,7 +2,6 @@ package dagger;
 
 import android.app.Activity;
 import android.app.Fragment;
-
 import dagger.FeatureSubComponent.CheckoutFragmentSubComponent;
 import dagger.FeatureSubComponent.NavigationActivitySubComponent;
 import dagger.FeatureSubComponent.ShirtDetailsFragmentSubComponent;
@@ -17,7 +16,7 @@ import ungeroed.com.teeshirtify.ShirtDetailsFragment;
 import ungeroed.com.teeshirtify.ShirtFragment;
 
 /**
- * Created by Morten on 01/09/2017.
+ * Builders module links the activity and fragment classes to their counterpart subcomponents
  */
 
 @Module
@@ -26,7 +25,6 @@ public abstract class BuildersModule {
     @IntoMap
     @ActivityKey(NavigationActivity.class)
     abstract AndroidInjector.Factory<? extends Activity> bindNavigationActivityInjectorFactory(NavigationActivitySubComponent.Builder builder);
-// Add more bindings here for other sub components
 
     @Binds
     @IntoMap

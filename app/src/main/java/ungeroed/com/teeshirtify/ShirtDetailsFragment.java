@@ -93,7 +93,7 @@ public class ShirtDetailsFragment extends Fragment {
 
     @Override
     public void onAttach(Context context) {
-        DaggerAppComponent.create().inject(this);
+        ((App) context.getApplicationContext()).getAppComponent().inject(this);
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;

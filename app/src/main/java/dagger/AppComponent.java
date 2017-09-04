@@ -1,7 +1,6 @@
 package dagger;
 
 import javax.inject.Singleton;
-
 import dagger.android.AndroidInjectionModule;
 import ungeroed.com.teeshirtify.ApiHandler;
 import ungeroed.com.teeshirtify.ApiHandlerConsumer;
@@ -12,7 +11,7 @@ import ungeroed.com.teeshirtify.ShirtDetailsFragment;
 import ungeroed.com.teeshirtify.ShirtFragment;
 
 /**
- * Created by Morten on 01/09/2017.
+ * Main application daggercomponent.
  */
 
 @Singleton

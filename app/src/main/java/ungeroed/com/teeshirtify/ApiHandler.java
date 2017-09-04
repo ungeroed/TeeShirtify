@@ -24,7 +24,6 @@ import com.google.gson.reflect.TypeToken;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.inject.Inject;
 
 
 /**
@@ -41,7 +40,7 @@ public class ApiHandler {
 
     AsyncShirtFetcher shirt_fetcherProvider = new AsyncShirtFetcher();
 
-    //----------------------- Constructor methods ----------------------------
+    //region ----------------------- Constructor methods ----------------------------
 
     //private constructor to force singleton instantiation
     public ApiHandler(){
@@ -50,9 +49,9 @@ public class ApiHandler {
 
     }
 
-    //----------------------- Constructor methods end ------------------------
+    //endregion ----------------------- Constructor methods end ------------------------
 
-    //----------------------- Model methods ----------------------------------
+    //region ----------------------- Model methods ----------------------------------
 
     /**
      * This method returns the filtered products. It could look a lot nicer with java 8 stream
@@ -103,10 +102,10 @@ public class ApiHandler {
         }
         return null;
     }
-    //----------------------- Model methods end ------------------------------
+    //endregion ----------------------- Model methods end ------------------------------
 
 
-    //----------------------- Product methods --------------------------------
+    //region ----------------------- Product methods --------------------------------
 
     /**
      * Initiates the fetching of all initial products using an async task
@@ -226,9 +225,9 @@ public class ApiHandler {
         return sanitized;
     }
 
-    //----------------------- Product methods end ----------------------------
+    //endregion ----------------------- Product methods end ----------------------------
 
-    //----------------------- Image methods  ---------------------------------
+    //region ----------------------- Image methods  ---------------------------------
 
     /**
      * This method initiates the fetching of images for a shirt.
@@ -275,10 +274,10 @@ public class ApiHandler {
         }
     }
 
-    //----------------------- Image methods  end -----------------------------
+    //endregion ----------------------- Image methods  end -----------------------------
 
 
-    //----------------------- Order methods ----------------------------------
+    //region ----------------------- Order methods ----------------------------------
 
     /**
      * This method creates the json object for the order posts it to the mock api.
@@ -350,7 +349,7 @@ public class ApiHandler {
 
     }
 
-    //----------------------- Order methods end ------------------------------
+    //endregion ----------------------- Order methods end ------------------------------
 
 
 

@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import ungeroed.com.teeshirtify.ApiHandler;
 import ungeroed.com.teeshirtify.ApiHandlerConsumer;
 
+import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
@@ -37,7 +38,7 @@ public class ApiHandlerDaggerTest {
     public void testDivideNumberOfElements_isCorrect() {
         Mockito.when(handler.getProductCount(new String[]{"All","All"})).thenReturn(2);
         Double res = consumer.DivideNumberOfElementsWith(4);
-        assert (res == 0.5);
+        assertEquals(res.doubleValue(), 0.5);
     }
 
     @Test
@@ -65,7 +66,7 @@ public class ApiHandlerDaggerTest {
     @Test(expected = NullPointerException.class)
     public void testDivideNumberOfElements_null() {
         Mockito.when(handler.getProductCount(new String[]{"All","All"})).thenReturn(2);
-        Double res = consumer.DivideNumberOfElementsWith(null);
+        consumer.DivideNumberOfElementsWith(null);
     }
 
 

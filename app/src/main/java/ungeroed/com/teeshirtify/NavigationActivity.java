@@ -16,12 +16,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationMenuView;
-
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -29,15 +27,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import java.util.HashMap;
-
 import javax.inject.Inject;
-
 import dagger.android.AndroidInjection;
 import q.rorbin.badgeview.Badge;
 import q.rorbin.badgeview.QBadgeView;
@@ -106,7 +100,7 @@ public class NavigationActivity extends AppCompatActivity implements ShirtFragme
     }
 
 
-    //-------------------------- Persistence methods  --------------------------------
+    //region -------------------------- Persistence methods  --------------------------------
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -146,9 +140,9 @@ public class NavigationActivity extends AppCompatActivity implements ShirtFragme
     }
 
 
-    //-------------------------- Persistence methods end --------------------------------
+    //endregion -------------------------- Persistence methods end --------------------------------
 
-    //-------------------------- Fragment callback methods  --------------------------------
+    //region -------------------------- Fragment callback methods  --------------------------------
 
     /**
      * Callback method for whenever users click on list items.
@@ -215,9 +209,9 @@ public class NavigationActivity extends AppCompatActivity implements ShirtFragme
 
     }
 
-    //-------------------------- Fragment callback methods end --------------------------------
+    //endregion -------------------------- Fragment callback methods end --------------------------------
 
-    //-------------------------- UI Update methods --------------------------------
+    //region -------------------------- UI Update methods --------------------------------
 
     /**
      * This method updates the shopping basket.
@@ -272,9 +266,9 @@ public class NavigationActivity extends AppCompatActivity implements ShirtFragme
         return count;
     }
 
-    //-------------------------- UI Update methods END --------------------------------
+    //endregion -------------------------- UI Update methods END --------------------------------
 
-    //-------------------------- navigation --------------------------------
+    //region -------------------------- navigation --------------------------------
 
     /**
      * standard listener for bottom navigationview.
@@ -319,9 +313,9 @@ public class NavigationActivity extends AppCompatActivity implements ShirtFragme
         getFragmentManager().beginTransaction().replace(R.id.content, checkoutFragment).commit();
     }
 
-    //-------------------------- navigation end -----------------------------
+    //endregion -------------------------- navigation end -----------------------------
 
-    //-------------------------- Local Intent receiver methods --------------
+    //region -------------------------- Local Intent receiver methods --------------
 
     /**
      * This method catches events fired by the ApiHandler with http statuscodes from
@@ -375,6 +369,6 @@ public class NavigationActivity extends AppCompatActivity implements ShirtFragme
         }
     };
 
-    //-------------------------- Local Intent receiver methods end --------------
+    //endregion -------------------------- Local Intent receiver methods end --------------
 
 }

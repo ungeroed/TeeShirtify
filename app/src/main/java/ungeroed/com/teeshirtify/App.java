@@ -7,14 +7,13 @@ import android.app.Fragment;
 import javax.inject.Inject;
 
 import dagger.AppComponent;
-import dagger.AppModule;
 import dagger.DaggerAppComponent;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasDispatchingActivityInjector;
 import dagger.android.HasDispatchingFragmentInjector;
 
 /**
- * Created by Morten on 01/09/2017.
+ * Application context extension to inject ACtivities and fragments in dagger.
  */
 
 public class App extends Application implements HasDispatchingActivityInjector, HasDispatchingFragmentInjector {

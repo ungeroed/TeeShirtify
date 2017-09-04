@@ -1,16 +1,11 @@
 package ungeroed.com.teeshirtify;
 
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import javax.inject.Inject;
-
-import dagger.DaggerAppComponent;
 import ungeroed.com.teeshirtify.ShirtFragment.OnListFragmentInteractionListener;
 
 
@@ -32,7 +27,7 @@ public class MyShirtRecyclerViewAdapter extends RecyclerView.Adapter<MyShirtRecy
     private final OnListFragmentInteractionListener mListener;
 
 
-    // ------------------------- lifecycle methods -----------------------
+    // region ------------------------- lifecycle methods -----------------------
 
     /**
      * standard constructor
@@ -79,9 +74,9 @@ public class MyShirtRecyclerViewAdapter extends RecyclerView.Adapter<MyShirtRecy
         });
     }
 
-    // ------------------------- Lifecycle methods end -----------------------
+    // endregion ------------------------- Lifecycle methods end -----------------------
 
-    // ------------------------- Data adaptor methods -----------------------
+    // regin ------------------------- Data adaptor methods -----------------------
 
     /**
      * @return current number of items in datasource, with the filters applied
@@ -105,9 +100,9 @@ public class MyShirtRecyclerViewAdapter extends RecyclerView.Adapter<MyShirtRecy
         this.notifyDataSetChanged();
     }
 
-    // ------------------------- Lifecycle methods end -----------------------
+    //endregion ------------------------- Lifecycle methods end -----------------------
 
-    // ------------------------- UI methods ---------------------------------
+    //region ------------------------- UI methods ---------------------------------
 
     /**
      * this contents of this method matches the custom layout xml
@@ -129,5 +124,5 @@ public class MyShirtRecyclerViewAdapter extends RecyclerView.Adapter<MyShirtRecy
 
     }
 
-    // ------------------------- UI methods end ---------------------------------
+    //endregion ------------------------- UI methods end ---------------------------------
 }
