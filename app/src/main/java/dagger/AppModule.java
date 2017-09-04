@@ -8,7 +8,7 @@ import dagger.FeatureSubComponent.CheckoutFragmentSubComponent;
 import dagger.FeatureSubComponent.NavigationActivitySubComponent;
 import dagger.FeatureSubComponent.ShirtDetailsFragmentSubComponent;
 import dagger.FeatureSubComponent.ShirtFragmentSubComponent;
-import ungeroed.com.teeshirtify.MyShirtRecyclerViewAdapter;
+import dagger.Test.TestComponent;
 
 
 /**

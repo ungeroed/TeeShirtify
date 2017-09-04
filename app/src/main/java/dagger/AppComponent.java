@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.android.AndroidInjectionModule;
 import ungeroed.com.teeshirtify.ApiHandler;
+import ungeroed.com.teeshirtify.ApiHandlerConsumer;
 import ungeroed.com.teeshirtify.App;
 import ungeroed.com.teeshirtify.CheckoutFragment;
 import ungeroed.com.teeshirtify.MyShirtRecyclerViewAdapter;
@@ -24,4 +25,5 @@ public interface AppComponent {
     void inject(CheckoutFragment target);
     void inject(MyShirtRecyclerViewAdapter target);
     void inject(ApiHandler target);
+    void inject(ApiHandlerConsumer target);
 }

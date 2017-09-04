@@ -39,6 +39,7 @@ public class ShirtFragment extends Fragment {
     MyShirtRecyclerViewAdapter myAdapter;
 
     @Inject ApiHandler handler;
+
     //Fragment variables are used to hold current filter selections as opposed to savedInstancestate
     //this is because lifecyclemethods are not called when fragments are replaced
     private static int current_size = 0;
