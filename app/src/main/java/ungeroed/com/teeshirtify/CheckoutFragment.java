@@ -34,12 +34,12 @@ public class CheckoutFragment extends Fragment {
     private Integer totalPrice = 0;
     @Inject ApiHandler handler;
 
-    //region ------------------------------ instantiation methods -----------------------
+    //region  instantiation methods
 
 
-    //endregion ------------------------------ instantiation methods -----------------------
+    //endregion
 
-    //region------------------------------ lifecycle methods ---------------------------
+    //region lifecycle methods
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -133,9 +133,9 @@ public class CheckoutFragment extends Fragment {
         mListener = null;
     }
 
-    //endregion ------------------------------ Lifecycle methods end -----------------------
+    //endregion
 
-    //region ------------------------------ UI methods ----------------------------------
+    //region  UI methods
 
     /**
      * This method creates a single line to display the purchased product, the amount
@@ -170,7 +170,7 @@ public class CheckoutFragment extends Fragment {
         return line;
     }
 
-    //endregion ------------------------------ UI methods end -----------------------
+    //endregion
 
     /**
      * Callback interface. The method uses a boolean parameter to determine which button was

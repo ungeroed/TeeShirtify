@@ -45,7 +45,7 @@ public class ShirtFragment extends Fragment {
     private static int current_size = 0;
     private static int current_color = 0;
 
-    //region --------------------------- lifecycle methods ---------------------------------
+    //region lifecycle methods
 
 
 
@@ -110,10 +110,10 @@ public class ShirtFragment extends Fragment {
 
     }
 
-    //endregion --------------------------- lifecycle methods end ---------------------------------
+    //endregion
 
 
-    //region --------------------------- UI methods --------------------------------------------
+    //region UI methods
 
     /**
      * This method creates the view with the filter selectin spinners.
@@ -194,9 +194,9 @@ public class ShirtFragment extends Fragment {
         return filters;
     }
 
-    //endregion -------------------------- UI methods end -----------------------------------------
+    //endregion
 
-    //region -------------------------- callback methods ---------------------------------------
+    //region callback methods
 
 
     /**
@@ -208,9 +208,9 @@ public class ShirtFragment extends Fragment {
         void onListFragmentInteraction(Shirt item);
     }
 
-    //endregion -------------------------- callback methods end--------------------------------------
+    //endregion
 
-    //region ----------------------- Local Intent receiver methods --------------------
+    //region Local Intent receiver methods
 
     /**
      * This method receives updates on fetching main shirt data.
@@ -234,5 +234,5 @@ public class ShirtFragment extends Fragment {
         }
     };
 
-    //endregion ----------------------- Local Intent receiver methods end -----------------
+    //endregion
 }

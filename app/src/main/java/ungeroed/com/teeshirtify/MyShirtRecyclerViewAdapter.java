@@ -27,7 +27,7 @@ public class MyShirtRecyclerViewAdapter extends RecyclerView.Adapter<MyShirtRecy
     private final OnListFragmentInteractionListener mListener;
 
 
-    // region ------------------------- lifecycle methods -----------------------
+    // region lifecycle methods
 
     /**
      * standard constructor
@@ -74,9 +74,9 @@ public class MyShirtRecyclerViewAdapter extends RecyclerView.Adapter<MyShirtRecy
         });
     }
 
-    // endregion ------------------------- Lifecycle methods end -----------------------
+    // endregion
 
-    // regin ------------------------- Data adaptor methods -----------------------
+    // region Data adaptor methods
 
     /**
      * @return current number of items in datasource, with the filters applied
@@ -100,9 +100,9 @@ public class MyShirtRecyclerViewAdapter extends RecyclerView.Adapter<MyShirtRecy
         this.notifyDataSetChanged();
     }
 
-    //endregion ------------------------- Lifecycle methods end -----------------------
+    //endregion
 
-    //region ------------------------- UI methods ---------------------------------
+    //region UI methods
 
     /**
      * this contents of this method matches the custom layout xml
@@ -124,5 +124,5 @@ public class MyShirtRecyclerViewAdapter extends RecyclerView.Adapter<MyShirtRecy
 
     }
 
-    //endregion ------------------------- UI methods end ---------------------------------
+    //endregion
 }

@@ -100,7 +100,7 @@ public class NavigationActivity extends AppCompatActivity implements ShirtFragme
     }
 
 
-    //region -------------------------- Persistence methods  --------------------------------
+    //region Persistence methods
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -140,9 +140,9 @@ public class NavigationActivity extends AppCompatActivity implements ShirtFragme
     }
 
 
-    //endregion -------------------------- Persistence methods end --------------------------------
+    //endregion
 
-    //region -------------------------- Fragment callback methods  --------------------------------
+    //region Fragment callback methods
 
     /**
      * Callback method for whenever users click on list items.
@@ -209,9 +209,9 @@ public class NavigationActivity extends AppCompatActivity implements ShirtFragme
 
     }
 
-    //endregion -------------------------- Fragment callback methods end --------------------------------
+    //endregion
 
-    //region -------------------------- UI Update methods --------------------------------
+    //region UI Update methods
 
     /**
      * This method updates the shopping basket.
@@ -266,9 +266,9 @@ public class NavigationActivity extends AppCompatActivity implements ShirtFragme
         return count;
     }
 
-    //endregion -------------------------- UI Update methods END --------------------------------
+    //endregion
 
-    //region -------------------------- navigation --------------------------------
+    //region navigation
 
     /**
      * standard listener for bottom navigationview.
@@ -313,9 +313,9 @@ public class NavigationActivity extends AppCompatActivity implements ShirtFragme
         getFragmentManager().beginTransaction().replace(R.id.content, checkoutFragment).commit();
     }
 
-    //endregion -------------------------- navigation end -----------------------------
+    //endregion
 
-    //region -------------------------- Local Intent receiver methods --------------
+    //region Local Intent receiver methods
 
     /**
      * This method catches events fired by the ApiHandler with http statuscodes from
@@ -369,6 +369,6 @@ public class NavigationActivity extends AppCompatActivity implements ShirtFragme
         }
     };
 
-    //endregion -------------------------- Local Intent receiver methods end --------------
+    //endregion
 
 }

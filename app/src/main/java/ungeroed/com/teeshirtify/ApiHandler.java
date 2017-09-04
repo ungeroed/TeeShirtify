@@ -40,18 +40,8 @@ public class ApiHandler {
 
     AsyncShirtFetcher shirt_fetcherProvider = new AsyncShirtFetcher();
 
-    //region ----------------------- Constructor methods ----------------------------
 
-    //private constructor to force singleton instantiation
-    public ApiHandler(){
-        //DaggerAppComponent.create().inject(this);
-        if (products == null){products  = new ArrayList<Shirt>(); }
-
-    }
-
-    //endregion ----------------------- Constructor methods end ------------------------
-
-    //region ----------------------- Model methods ----------------------------------
+    //region Model methods
 
     /**
      * This method returns the filtered products. It could look a lot nicer with java 8 stream
@@ -102,10 +92,10 @@ public class ApiHandler {
         }
         return null;
     }
-    //endregion ----------------------- Model methods end ------------------------------
+    //endregion  Model methods
 
 
-    //region ----------------------- Product methods --------------------------------
+    //region  Product methods
 
     /**
      * Initiates the fetching of all initial products using an async task
@@ -225,9 +215,9 @@ public class ApiHandler {
         return sanitized;
     }
 
-    //endregion ----------------------- Product methods end ----------------------------
+    //endregion
 
-    //region ----------------------- Image methods  ---------------------------------
+    //region  Image methods
 
     /**
      * This method initiates the fetching of images for a shirt.
@@ -274,10 +264,10 @@ public class ApiHandler {
         }
     }
 
-    //endregion ----------------------- Image methods  end -----------------------------
+    //endregion
 
 
-    //region ----------------------- Order methods ----------------------------------
+    //region  Order methods
 
     /**
      * This method creates the json object for the order posts it to the mock api.
@@ -349,7 +339,7 @@ public class ApiHandler {
 
     }
 
-    //endregion ----------------------- Order methods end ------------------------------
+    //endregion
 
 
 
