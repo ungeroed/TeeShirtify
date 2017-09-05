@@ -35,10 +35,10 @@ import org.json.JSONObject;
 public class ApiHandler {
 
     //Fetched products
-    ArrayList<Shirt> products;
+    ArrayList<Shirt> products = new ArrayList<Shirt>();
 
 
-    AsyncShirtFetcher shirt_fetcherProvider = new AsyncShirtFetcher();
+    private AsyncShirtFetcher shirt_fetcherProvider = new AsyncShirtFetcher();
 
 
     //region Model methods
